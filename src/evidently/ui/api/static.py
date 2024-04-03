@@ -36,6 +36,6 @@ assets_router = Router(
     path="",
     route_handlers=[
         index,
-        create_static_files_router("/", directories=[pathlib.Path(base_path)]),
+        create_static_files_router("/", directories=[base_path]),
     ],
 )
