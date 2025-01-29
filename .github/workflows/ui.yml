@@ -177,3 +177,9 @@ jobs:
           name: playwright-report
           path: ui/service/playwright-report/
           retention-days: 30
+
+      - name: Deploy tp pages
+        if: always()
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ui/service/playwright-report
