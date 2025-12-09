@@ -40,6 +40,7 @@ jobs:
         with:
           files_yaml: |
             evidently_python:
+              - api-reference/**
               - .github/**
               - src/evidently/**
               - '!src/evidently/**/ui/**/assets/**'
@@ -216,6 +217,33 @@ jobs:
         with:
           name: build-artifacts
           path: dist/
+
+  generate-and-save-api-reference:
+    name: Generate API reference documentation
+    runs-on: ubuntu-22.04
+    needs: changed_files
+    if: ${{ github.event.pull_request.draft == false && needs.changed_files.outputs.evidently_any_modified == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: 📚 Generate docs and upload artifact
+        uses: ./.github/share-actions/generate-and-save-api-reference
+
+
+  download-and-deploy-api-reference:
+    name: Download and deploy API reference documentation
+    runs-on: ubuntu-22.04
+    needs: generate-and-save-api-reference
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      # this action exists in `gh-pages` branch
+      - name: 📚 Download and deploy API reference documentation
+        uses: ./.github/share-actions/deploy-just-saved-api-reference
+
 
   ui-build:
     name: UI build
