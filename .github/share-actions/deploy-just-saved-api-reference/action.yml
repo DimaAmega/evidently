@@ -1,0 +1,25 @@
+name: Download api-reference artifact
+inputs:
+  path:
+    type: string
+    description: "Path where the artifact should be downloaded"
+    required: false
+    default: "artifacts/api-reference"
+runs:
+  using: "composite"
+  steps:
+    - name: Download documentation artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: api-reference
+        path: ${{ inputs.path }}
+
+    - name: 📦 Setup node and pnpm install
+      uses: ./.github/share-actions/setup-node-and-pnpm-install
+
+    - name: 🔧 Push API reference documentation
+      shell: bash
+      run: pnpm run-all
+
+    - name: 🚀 Push API reference documentation
+      uses: ./.github/share-actions/commit-and-push-docs
