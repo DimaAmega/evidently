@@ -12,16 +12,16 @@ from evidently.core.report import Report
 from evidently.core.report import Run
 from evidently.legacy.core import ColumnType
 
-from . import _registry
+from . import sdk
 from ._version import __version__
 from ._version import version_info
 from .nbextension import _jupyter_nbextension_paths
 
 __all__ = [
     "__version__",
+    "sdk",
     "version_info",
     "_jupyter_nbextension_paths",
-    "_registry",
     "Report",
     "Run",
     "Dataset",
